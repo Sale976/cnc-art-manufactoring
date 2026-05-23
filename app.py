@@ -72,16 +72,16 @@ st.markdown("""
     div.stButton > button:hover { background-color: #cda34f !important; color: #2b2724 !important; }
     div[data-elementtype="dialog"] { background-color: rgba(35, 20, 10, 0.98) !important; border: 2px solid #cda34f !important; border-radius: 12px !important; padding: 25px !important; }
 </style>
-""", unsafe_allow_html=True)[cite: 2]
+""", unsafe_allow_html=True)
 
-st.markdown('<h1 class="vintage-title">CNC Woodworking Gallery</h1>', unsafe_allow_html=True)[cite: 2]
+st.markdown('<h1 class="vintage-title">CNC Woodworking Gallery</h1>', unsafe_allow_html=True)
 
 IMAGE_DIR = "images"
-os.makedirs(IMAGE_DIR, exist_ok=True)[cite: 2]
+os.makedirs(IMAGE_DIR, exist_ok=True)
 
 def get_image_base64(image_path):
     with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()[cite: 2]
+        return base64.b64encode(img_file.read()).decode()
 
 @st.dialog("Pregled projekta", width="large")
 def otvori_modal(staza, ime):
@@ -91,14 +91,14 @@ def otvori_modal(staza, ime):
         <img src="data:image/png;base64,{img_b64}" style="max-width: 100%; height: {VISINA_SLIKE}; object-fit: contain; border-radius: 8px; border: 1px solid rgba(255,215,150,0.2); margin: 0 auto;">
         <h3 style="color: #e6c280; font-family: 'Georgia', serif; text-align: center; margin-top: 20px; width: 100%;">{ime}</h3>
     </div>
-    """, unsafe_allow_html=True)[cite: 2]
+    """, unsafe_allow_html=True)
 
 # =========================================================================
 # --- STRANICA ZA ADMINISTRATORA (Bočna traka / Sidebar) ---
 # =========================================================================
 with st.sidebar:
     st.title("🔐 Admin Panel")
-    ADMIN_PASSWORD = "malisa_mali"[cite: 2]
+    ADMIN_PASSWORD = "malisa_mali"
 
     if not st.session_state.logged_in:
         admin_lozinka = st.text_input("Unesite lozinka za admina:", type="password", key="pwd_input")
@@ -106,7 +106,7 @@ with st.sidebar:
             st.session_state.logged_in = True
             st.rerun()
         elif admin_lozinka != "":
-            st.error("Pogrešna lozinka!")[cite: 2]
+            st.error("Pogrešna lozinka!")
     else:
         st.success("Uspešno ste prijavljeni!")
         st.markdown("---")
@@ -119,13 +119,13 @@ with st.sidebar:
             if novi_naziv and otpremljen_fajl:
                 ekstenzija = os.path.splitext(otpremljen_fajl.name)[1]
                 siguran_naziv = novi_naziv.strip().replace(" ", "_") + ekstenzija
-                putanja_za_cuvanje = os.path.join(IMAGE_DIR, siguran_naziv)[cite: 2]
+                putanja_za_cuvanje = os.path.join(IMAGE_DIR, siguran_naziv)
                 
                 fajl_bajtovi = otpremljen_fajl.getbuffer()
                 
                 # 1. Čuvamo sliku lokalno na serveru za trenutni prikaz
                 with open(putanja_za_cuvanje, "wb") as f:
-                    f.write(fajl_bajtovi)[cite: 2]
+                    f.write(fajl_bajtovi)
                 
                 # 2. PROMENJENO: Šaljemo sliku direktno na tvoj GitHub repozitorijum
                 try:
@@ -151,7 +151,7 @@ with st.sidebar:
                     # Ako nisi podesio lozinke u Secrets, aplikacija radi privremeno
                     st.warning(f"Slika je sačuvana samo privremeno! (Nisi podesio st.secrets na Streamlitu. Greška: {e})")
             else:
-                st.error("Molimo unesite i naziv i sliku.")[cite: 2]
+                st.error("Molimo unesite i naziv i sliku.")
                 
         st.markdown("---")
         if st.button("Izloguj se ❌"):
@@ -159,21 +159,21 @@ with st.sidebar:
             if "project_title" in st.session_state: del st.session_state["project_title"]
             if "project_file" in st.session_state: del st.session_state["project_file"]
             if "pwd_input" in st.session_state: del st.session_state["pwd_input"]
-            st.rerun()[cite: 2]
+            st.rerun()
 
 # =========================================================================
 # --- GLAVNI PRIKAZ GALERIJE ---
 # =========================================================================
-images = [f for f in os.listdir(IMAGE_DIR) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif'))][cite: 2]
+images = [f for f in os.listdir(IMAGE_DIR) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif'))]
 
 if not images:
-    st.info("Nema pronađenih projekata. Otvorite bočni meni da se prijavite kao admin i dodate prve radove.")[cite: 2]
+    st.info("Nema pronađenih projekata. Otvorite bočni meni da se prijavite kao admin i dodate prve radove.")
 else:
-    cols = st.columns(3)[cite: 2]
+    cols = st.columns(3)
     for idx, img_name in enumerate(images):
         col = cols[idx % 3]
         proj_name = os.path.splitext(img_name)[0].replace("_", " ")
-        img_path = os.path.join(IMAGE_DIR, img_name)[cite: 2]
+        img_path = os.path.join(IMAGE_DIR, img_name)
         
         with col:
             st.markdown(f"""
@@ -181,8 +181,8 @@ else:
                 <img src="data:image/png;base64,{get_image_base64(img_path)}" style="width:100%; border-radius:6px; aspect-ratio: 4/3; object-fit: cover; border: 2px solid rgba(255,215,150,0.1);">
                 <div class="card-title">{proj_name}</div>
             </div>
-            """, unsafe_allow_html=True)[cite: 2]
+            """, unsafe_allow_html=True)
             
             if st.button("Povećaj sliku 🔍", key=f"btn_{idx}"):
-                otvori_modal(img_path, proj_name)[cite: 2]
-            st.markdown("<br>", unsafe_allow_html=True)[cite: 2]
+                otvori_modal(img_path, proj_name)
+            st.markdown("<br>", unsafe_allow_html=True)
