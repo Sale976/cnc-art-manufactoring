@@ -10,7 +10,7 @@ if "logged_in" not in st.session_state:
 # =========================================================================
 # ⚙️ RUČNO PODEŠAVANJE VELIČINE
 # =========================================================================
-VISINA_SLIKE = "650px"  #[cite: 2]
+VISINA_SLIKE = "650px"
 
 # Fabrička konfiguracija stranice (zatvoren sidebar pri prvoj poseti)
 st.set_page_config(
