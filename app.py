@@ -168,7 +168,7 @@ images = [f for f in os.listdir(IMAGE_DIR) if f.lower().endswith(('.png', '.jpg'
 with st.sidebar:
     st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
     st.title("🔐 Admin Panel")
-    ADMIN_PASSWORD = "malisa_mali"
+    ADMIN_PASSWORD = "malisa"
 
     if not st.session_state.logged_in:
         admin_lozinka = st.text_input("Unesite lozinka za admina:", type="password", key="pwd_input")
