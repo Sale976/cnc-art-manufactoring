@@ -113,7 +113,7 @@ with st.sidebar:
         st.subheader("Dodaj novi projekat")
         
         novi_naziv = st.text_input("Naziv projekta:", key="project_title")
-        otpremljen_fajl = st.file_uploader("Izaberite sliku projekta:", type=["png", "jpg", "jpeg", "webp", "gif"], key="project_file")[cite: 2]
+        otpremljen_fajl = st.file_uploader("Izaberite sliku projekta:", type=["png", "jpg", "jpeg", "webp", "gif"], key="project_file")
         
         if st.button("Sačuvaj i objavi 🚀"):
             if novi_naziv and otpremljen_fajl:
