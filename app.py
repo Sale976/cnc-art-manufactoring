@@ -5,7 +5,7 @@ from github import Github  # Potrebno je dodati PyGithub u requirements.txt
 
 # Inicijalizacija stanja za prijavu admina
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False[cite: 2]
+    st.session_state.logged_in = False
 
 # =========================================================================
 # ⚙️ RUČNO PODEŠAVANJE VELIČINE
@@ -17,7 +17,7 @@ st.set_page_config(
     page_title="CNC Woodworking Gallery", 
     layout="wide", 
     initial_sidebar_state="collapsed"
-)[cite: 2]
+)
 
 # --- MODIFIKOVAN CSS (Čist izgled bez skrivenih dugmića) ---
 st.markdown("""
@@ -87,16 +87,16 @@ st.markdown("""
     
     div[data-elementtype="dialog"] { background-color: rgba(35, 20, 10, 0.98) !important; border: 2px solid #cda34f !important; border-radius: 12px !important; padding: 25px !important; }
 </style>
-""", unsafe_allow_html=True)[cite: 2]
+""", unsafe_allow_html=True)
 
-st.markdown('<h1 class="vintage-title">CNC Woodworking Gallery</h1>', unsafe_allow_html=True)[cite: 2]
+st.markdown('<h1 class="vintage-title">CNC Woodworking Gallery</h1>', unsafe_allow_html=True)
 
 IMAGE_DIR = "images"
-os.makedirs(IMAGE_DIR, exist_ok=True)[cite: 2]
+os.makedirs(IMAGE_DIR, exist_ok=True)
 
 def get_image_base64(image_path):
     with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()[cite: 2]
+        return base64.b64encode(img_file.read()).decode()
 
 @st.dialog("Pregled projekta", width="large")
 def otvori_modal(staza, ime):
@@ -106,7 +106,7 @@ def otvori_modal(staza, ime):
         <img src="data:image/png;base64,{img_b64}" style="max-width: 100%; height: {VISINA_SLIKE}; object-fit: contain; border-radius: 8px; border: 1px solid rgba(255,215,150,0.2); margin: 0 auto;">
         <h3 style="color: #e6c280; font-family: 'Georgia', serif; text-align: center; margin-top: 20px; width: 100%;">{ime}</h3>
     </div>
-    """, unsafe_allow_html=True)[cite: 2]
+    """, unsafe_allow_html=True)
 
 # =========================================================================
 # --- STRANICA ZA ADMINISTRATORA (Bočna traka / Sidebar) ---
@@ -114,7 +114,7 @@ def otvori_modal(staza, ime):
 with st.sidebar:
     st.markdown('<div class="sidebar-container">', unsafe_allow_html=True)
     st.title("🔐 Admin Panel")
-    ADMIN_PASSWORD = "malisa_mali"[cite: 2]
+    ADMIN_PASSWORD = "malisa_mali"
 
     if not st.session_state.logged_in:
         admin_lozinka = st.text_input("Unesite lozinka za admina:", type="password", key="pwd_input")
@@ -122,25 +122,25 @@ with st.sidebar:
             st.session_state.logged_in = True
             st.rerun()
         elif admin_lozinka != "":
-            st.error("Pogrešna lozinka!")[cite: 2]
+            st.error("Pogrešna lozinka!")
     else:
         st.success("Uspešno ste prijavljeni!")
         st.markdown("---")
         st.subheader("Dodaj novi projekat")
         
         novi_naziv = st.text_input("Naziv projekta:", key="project_title")
-        otpremljen_fajl = st.file_uploader("Izaberite sliku projekta:", type=["png", "jpg", "jpeg", "webp", "gif"], key="project_file")[cite: 2]
+        otpremljen_fajl = st.file_uploader("Izaberite sliku projekta:", type=["png", "jpg", "jpeg", "webp", "gif"], key="project_file")
         
         if st.button("Sačuvaj i objavi 🚀", key="admin_submit_btn"):
             if novi_naziv and otpremljen_fajl:
                 ekstenzija = os.path.splitext(otpremljen_fajl.name)[1]
                 siguran_naziv = novi_naziv.strip().replace(" ", "_") + ekstenzija
-                putanja_za_cuvanje = os.path.join(IMAGE_DIR, siguran_naziv)[cite: 2]
+                putanja_za_cuvanje = os.path.join(IMAGE_DIR, siguran_naziv)
                 
                 fajl_bajtovi = otpremljen_fajl.getbuffer()
                 
                 with open(putanja_za_cuvanje, "wb") as f:
-                    f.write(fajl_bajtovi)[cite: 2]
+                    f.write(fajl_bajtovi)
                 
                 try:
                     GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
@@ -162,7 +162,7 @@ with st.sidebar:
                 except Exception as e:
                     st.warning(f"Slika je sačuvana samo privremeno! (Nisi podesio st.secrets na Streamlitu. Greška: {e})")
             else:
-                st.error("Molimo unesite i naziv i sliku.")[cite: 2]
+                st.error("Molimo unesite i naziv i sliku.")
                 
         st.markdown("---")
         if st.button("Izloguj se ❌", key="admin_logout_btn"):
@@ -176,10 +176,10 @@ with st.sidebar:
 # =========================================================================
 # --- GLAVNI PRIKAZ GALERIJE (Uhvati klik bez st.button dugmadi) ---
 # =========================================================================
-images = [f for f in os.listdir(IMAGE_DIR) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif'))][cite: 2]
+images = [f for f in os.listdir(IMAGE_DIR) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.webp', '.gif'))]
 
 if not images:
-    st.info("Nema pronađenih projekata. Otvorite bočni meni da se prijavite kao admin i dodate prve radove.")[cite: 2]
+    st.info("Nema pronađenih projekata. Otvorite bočni meni da se prijavite kao admin i dodate prve radove.")
 else:
     # 1. Proveravamo da li je korisnik kliknuo na neku sliku (preko URL parametara)
     url_parametri = st.query_params
@@ -196,11 +196,11 @@ else:
             otvori_modal(pun_put, lepi_naziv)
 
     # 2. Renderovanje galerije u 3 kolone
-    cols = st.columns(3)[cite: 2]
+    cols = st.columns(3)
     for idx, img_name in enumerate(images):
         col = cols[idx % 3]
         proj_name = os.path.splitext(img_name)[0].replace("_", " ")
-        img_path = os.path.join(IMAGE_DIR, img_name)[cite: 2]
+        img_path = os.path.join(IMAGE_DIR, img_name)
         
         with col:
             # Čist HTML link: kada klikneš na sliku, sajt se osvežava sa parametrom ?izabrana_slika=ime.png
@@ -212,4 +212,4 @@ else:
                 </div>
             </a>
             """, unsafe_allow_html=True)
-            st.markdown("<br>", unsafe_allow_html=True)[cite: 2]
+            st.markdown("<br>", unsafe_allow_html=True)
