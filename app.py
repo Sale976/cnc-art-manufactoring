@@ -5,7 +5,7 @@ from github import Github  # Potrebno je dodati PyGithub u requirements.txt
 
 # Inicijalizacija stanja za prijavu admina
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False[cite: 2]
+    st.session_state.logged_in = False
 
 # =========================================================================
 # ⚙️ RUČNO PODEŠAVANJE VELIČINE
