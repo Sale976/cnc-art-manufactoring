@@ -17,7 +17,7 @@ st.set_page_config(
     page_title="CNC Woodworking Gallery", 
     layout="wide", 
     initial_sidebar_state="collapsed"
-)[cite: 2]
+)
 
 # --- ZADRŽANA TVOJA KOMPLETNA CSS STILIZACIJA ---
 st.markdown("""
